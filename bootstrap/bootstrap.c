@@ -6,10 +6,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-#include <stdarg.h>	//for dlog
-#include <unistd.h>	//for getopt
+#include <stdarg.h>
+#include <unistd.h>
 
-int DEBUG = 1;
+int DEBUG = 0;
 
 void dlog(const char* text, ...) {
 	if(DEBUG == 1 && text) { 
@@ -20,12 +20,36 @@ void dlog(const char* text, ...) {
 	}
 }
 
-int main(int argc, char *argv[]) {
+void usage(void) {
+	printf("Parenthese's bootstrap usage\n");
+	printf("----------------------------\n");
+	printf("TODO\n\n");
+}
+
+
+int main(int argc, char **argv) {
+
+	int c;
+
 	printf("-----------------------------\n");
 	printf("Parenthese's Scheme bootstrap\n");
 	printf("-----------------------------\n\n");
 
-	dlog("/!\\ Running in debug mode !\n\n");
+	while ((c = getopt(argc, argv, "dh")) != -1) {
+		switch(c) {
+			case 'd':
+				DEBUG = 1;
+				dlog("/!\\ Running in debug mode !\n\n");
+				break;
+			case 'h':
+				usage();
+				break;
+			default:
+				fprintf (stderr, "Unknown option character -%c.\n", optopt);
+				return 1;
+				break;
+		}
+	}
 
 	return 0;
 }
